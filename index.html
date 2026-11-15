@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E2A47">
+<meta name="robots" content="index">
+<title>خدمات تاسیسات | نصب، سرویس و تعمیر پکیج دیواری</title>
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<!-- هدر -->
+<header class="topbar">
+  <div class="brand-badge" aria-hidden="true">ت</div>
+  <div>
+    <div class="brand-name" id="brandName">خدمات تاسیسات ساختمان</div>
+    <div class="brand-tag" id="brandTag">نصب، سرویس و تعمیر پکیج دیواری</div>
+  </div>
+  <a class="call-btn" id="callTop" href="tel:09121234567" aria-label="تماس تلفنی">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    تماس
+  </a>
+</header>
+
+<!-- ناوبری دسکتاپ -->
+<nav class="navbar" id="navbar" aria-label="منوی اصلی"></nav>
+
+<main>
+  <!-- ══════════ صفحه خانه ══════════ -->
+  <section class="page active" id="page-home" aria-label="خانه">
+    <div class="hero">
+      <img class="hero-img" src="assets/img/hero-technician.jpg" alt="تکنسین در حال سرویس پکیج دیواری">
+      <div class="hero-body">
+        <h1 id="heroTitle">نصب، سرویس و تعمیر پکیج دیواری</h1>
+        <p id="heroDesc">با بانک خطای کامل پکیج‌ها، کاتالوگ انواع پکیج با عکس و ثبت سفارش آنلاین — تکنسین ما در اولین فرصت در محل شما حاضر می‌شود.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" data-goto="order">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            ثبت سفارش
+          </button>
+          <a class="btn btn-ghost" id="callHero" href="tel:09121234567">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            تماس فوری
+          </a>
+          <a class="btn btn-ghost" id="baleHero" href="https://ble.ir/tasisatrozbot" target="_blank" rel="noopener" style="background:#E8F3EE;color:#116149;border:1.5px solid #CFE6DA">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            گفتگو در بله
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">خدمات ما</h2>
+    <div class="svc-grid" id="svcGrid"></div>
+
+    <h2 class="section-title">چرا ما؟</h2>
+    <div class="svc-grid" id="whyGrid"></div>
+  </section>
+
+  <!-- ══════════ صفحه پکیج‌ها ══════════ -->
+  <section class="page" id="page-packages" aria-label="کاتالوگ پکیج‌ها">
+    <h2 class="section-title">انواع پکیج دیواری</h2>
+    <div id="typeList"></div>
+
+    <h2 class="section-title">جدول انتخاب ظرفیت</h2>
+    <div class="table-wrap">
+      <table id="capTable">
+        <thead><tr><th>متراژ واحد</th><th>تعداد رادیاتور</th><th>ظرفیت پیشنهادی (BTU)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="notice notice-blue" id="capNote" style="margin-top:10px"></p>
+
+    <h2 class="section-title">برندهای رایج بازار</h2>
+    <div class="brand-grid" id="brandGrid"></div>
+  </section>
+
+  <!-- ══════════ صفحه بانک خطا ══════════ -->
+  <section class="page" id="page-errors" aria-label="بانک خطا">
+    <h2 class="section-title">بانک خطای پکیج دیواری</h2>
+    <div class="notice">قبل از هر کاری این سه مورد را چک کنید: باز بودن شیر گاز، فشار آب روی ۱ تا ۱.۵ بار، و یک بار ریست کردن دستگاه. اگر کد برگشت، از جدول زیر معنی آن را پیدا کنید.</div>
+    <div class="filter-row">
+      <select id="errBrand" aria-label="انتخاب برند"></select>
+      <input type="search" id="errSearch" placeholder="جستجوی کد یا مشکل (مثلا E1 یا فشار آب)" aria-label="جستجوی کد خطا">
+    </div>
+    <div id="errList"></div>
+    <p class="notice notice-blue" style="margin-top:14px">کد برند شما در لیست نیست یا مطمئن نیستید؟ کد و مدل پکیج را یادداشت کنید و در بخش «ثبت سفارش» درخواست تعمیر بدهید؛ تکنسین با قطعه احتمالی می‌آید.</p>
+  </section>
+
+  <!-- ══════════ صفحه راهنما ══════════ -->
+  <section class="page" id="page-guides" aria-label="راهنماها">
+    <h2 class="section-title">راهنماهای آموزشی</h2>
+    <div id="guideList"></div>
+  </section>
+
+  <!-- ══════════ صفحه سفارش ══════════ -->
+  <section class="page" id="page-order" aria-label="ثبت سفارش">
+    <h2 class="section-title">ثبت سفارش خدمات</h2>
+
+    <div class="form-card" id="orderFormWrap">
+      <form id="orderForm" novalidate>
+        <div class="f-grid">
+          <div class="f-row">
+            <label for="fName">نام و نام خانوادگی <span class="req">*</span></label>
+            <input id="fName" name="name" type="text" required autocomplete="name">
+          </div>
+          <div class="f-row">
+            <label for="fPhone">شماره تماس <span class="req">*</span></label>
+            <input id="fPhone" name="phone" type="tel" inputmode="numeric" placeholder="09xxxxxxxxx" required autocomplete="tel">
+          </div>
+        </div>
+        <div class="f-grid">
+          <div class="f-row">
+            <label for="fCity">شهر / منطقه <span class="req">*</span></label>
+            <input id="fCity" name="city" type="text" required>
+          </div>
+          <div class="f-row">
+            <label for="fWhen">زمان مراجعه دلخواه</label>
+            <select id="fWhen" name="when">
+              <option value="هر وقت ممکن بود">فرقی ندارد</option>
+              <option value="صبح (۸ تا ۱۲)">صبح (۸ تا ۱۲)</option>
+              <option value="ظهر (۱۲ تا ۱۶)">ظهر (۱۲ تا ۱۶)</option>
+              <option value="عصر (۱۶ تا ۲۰)">عصر (۱۶ تا ۲۰)</option>
+            </select>
+          </div>
+        </div>
+        <div class="f-row">
+          <label for="fAddr">آدرس دقیق</label>
+          <input id="fAddr" name="address" type="text" placeholder="خیابان، کوچه، پلاک، طبقه">
+        </div>
+        <div class="f-grid">
+          <div class="f-row">
+            <label for="fService">نوع خدمت <span class="req">*</span></label>
+            <select id="fService" name="service" required>
+              <option value="نصب پکیج دیواری">نصب پکیج دیواری</option>
+              <option value="سرویس سالانه پکیج">سرویس سالانه پکیج</option>
+              <option value="تعمیر و رفع خطا">تعمیر و رفع خطا</option>
+              <option value="هواگیری و تنظیم فشار">هواگیری و تنظیم فشار</option>
+              <option value="مشاوره و بازدید">مشاوره و بازدید</option>
+              <option value="سایر خدمات تاسیسات">سایر خدمات تاسیسات</option>
+            </select>
+          </div>
+          <div class="f-row">
+            <label for="fBrand">برند پکیج</label>
+            <select id="fBrand" name="brand"></select>
+          </div>
+        </div>
+        <div class="f-grid">
+          <div class="f-row">
+            <label for="fModel">مدل پکیج</label>
+            <input id="fModel" name="model" type="text" placeholder="مثلا ورونا 24">
+          </div>
+          <div class="f-row">
+            <label for="fCode">کد خطا (اگر نمایش می‌دهد)</label>
+            <input id="fCode" name="errorCode" type="text" placeholder="مثلا E1">
+            <div class="f-hint" id="codeHint"></div>
+          </div>
+        </div>
+        <div class="f-row">
+          <label for="fDesc">شرح مشکل</label>
+          <textarea id="fDesc" name="description" placeholder="مثلا: پکیج روشن می‌شود ولی آب گرم نوسان دارد..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2"/></svg>
+          ارسال سفارش
+        </button>
+        <div class="form-status" id="formStatus"></div>
+      </form>
+
+      <div class="success-box" id="successBox">
+        <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h3>سفارش شما ثبت شد</h3>
+        <div>کد پیگیری:</div>
+        <div class="track" id="trackCode">—</div>
+        <p>همکاران ما در اسرع وقت با شماره شما تماس می‌گیرند. کد پیگیری را نگه دارید.</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+          <button class="btn btn-outline" id="againBtn">ثبت سفارش دیگر</button>
+          <a class="btn btn-ghost" id="callAfter" style="background:#EEF4F9;color:#0E2A47;border:1.5px solid #D9E4EE" href="tel:">تماس تلفنی</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- نوار پایین موبایل -->
+<nav class="tabbar" id="tabbar" aria-label="منوی اصلی موبایل"></nav>
+
+<footer>
+  <div class="foot-in">
+    <div class="f-line"><b id="footName">خدمات تاسیسات ساختمان</b></div>
+    <div class="f-line" id="footAddr"></div>
+    <div class="f-line" id="footHours"></div>
+    <div class="f-line">تلفن: <a href="tel:" id="footPhone" style="color:#7FE7DB">—</a></div>
+    <div class="f-line">گفتگو در بله: <a href="https://ble.ir/tasisatrozbot" id="footBale" target="_blank" rel="noopener" style="color:#7FE7DB">ble.ir/tasisatrozbot</a></div>
+    <div class="copy">سامانه ثبت سفارش و بانک خطای پکیج دیواری — نسخه ۱</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="data/errors.js"></script>
+<script src="data/boilers.js"></script>
+<script src="data/guides.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
