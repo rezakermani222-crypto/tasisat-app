@@ -56,6 +56,12 @@ function utf8b64(str) {
     });
     $("#footPhone").textContent = phone;
   }
+  if (CFG.phone2) {
+    var p2 = $("#footPhone2");
+    if (p2) { p2.href = "tel:" + CFG.phone2; p2.textContent = CFG.phone2; }
+    var wrap = $("#footPhone2Wrap");
+    if (wrap) wrap.style.display = "";
+  }
   var baleUrl = "https://ble.ir/" + (CFG.baleUsername || "tasisatrozbot");
   ["#baleHero", "#footBale"].forEach(function (sel) {
     var el = $(sel); if (el) { el.href = baleUrl; }
@@ -422,6 +428,7 @@ $("#guideList").addEventListener("click", function (e) {
       }).catch(function () { fail(null); });
 
       function fail(r) {
+        baleNotify(data, track); /* حتی وقتی ذخیره در گیت‌هاب خطا می‌دهد، سفارش در بله نمی‌پرد */
         btn.disabled = false;
         btn.innerHTML = oldHtml;
         var why = "ارتباط با گیت‌هاب برقرار نشد.";
