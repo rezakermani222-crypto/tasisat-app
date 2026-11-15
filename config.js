@@ -9,15 +9,16 @@
 const SITE_CONFIG = {
 
   /* ---------- مشخصات کسب‌وکار ---------- */
-  businessName: "خدمات وتاسیسات روز",   // نام کسب‌وکار شما
+  businessName: "خدمات تاسیسات ساختمان",   // نام کسب‌وکار شما
   tagline: "نصب، سرویس و تعمیر پکیج دیواری", // یک جمله معرفی زیر نام
-  phone: "09982219245",                      // شماره تماس (با 09 شروع شود)
-  address: "تهران خیابان استاد معین",
+  phone: "09982219245",                      // شماره تماس همراه (با 09 شروع شود)
+  phone2: "02166157626",                     // تلفن ثابت (در پایین سایت نمایش داده می‌شود)
+  address: "آدرس دفتر یا محدوده خدمات شما اینجا نوشته می‌شود",
   workingHours: "شنبه تا پنجشنبه، از ۸ صبح تا ۸ شب",
   city: "شهر شما",                           // شهر یا محدوده خدمات
 
   /* ---------- صفحه مدیریت ---------- */
-  adminPass: "55v462ve",   // رمز ورود صفحه مدیریت (admin.html) — حتماً عوضش کنید!
+  adminPass: "55v462ve2",   // رمز ورود صفحه مدیریت (admin.html) — حتماً عوضش کنید!
 
   /* ---------- ذخیره سفارش‌ها در گیت‌هاب ----------
      طبق راهنمای PDF، یک مخزن (Repository) خصوصی به اسم orders بسازید،
@@ -25,9 +26,9 @@ const SITE_CONFIG = {
      ordersRepo  مثل: "your-username/orders"
      githubToken مثل: "github_pat_xxxx..."
      تا وقتی خالی باشند، سفارش‌ها به‌صورت ایمیل به adminEmail ارسال می‌شوند. */
-  ordersRepo: "https://rezakermani222-crypto.github.io/tasisat-app/#/home",
-  githubToken: "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",
-  adminEmail: "rezakermani2003@hotmail.com",  // ایمیل شما برای دریافت سفارش‌های پشتیبان
+  ordersRepo: "rezakermani222-crypto/orders",  // نام‌کاربری/نام‌مخزن — نه آدرس سایت!
+  githubToken: "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",
+  adminEmail: "your-email@example.com",  // ایمیل شما برای دریافت سفارش‌های پشتیبان
 
   /* ---------- بات بله ----------
      وقتی مشتری سفارش ثبت می‌کند، متن کامل سفارش فوراً با بات شما در پیام‌رسان بله
