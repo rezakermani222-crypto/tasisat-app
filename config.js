@@ -26,7 +26,7 @@ const SITE_CONFIG = {
      githubToken مثل: "github_pat_xxxx..."
      تا وقتی خالی باشند، سفارش‌ها به‌صورت ایمیل به adminEmail ارسال می‌شوند. */
   ordersRepo: "https://rezakermani222-crypto.github.io/tasisat-app/#/home",
-  githubToken: "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",
+  githubToken: "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",
   adminEmail: "rezakermani2003@hotmail.com",  // ایمیل شما برای دریافت سفارش‌های پشتیبان
 
   /* ---------- بات بله ----------
