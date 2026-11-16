@@ -307,11 +307,19 @@ $("#guideList").addEventListener("click", function (e) {
       "شرح: " + (data.description || "-"),
       "زمان ثبت: " + (data.createdAt || nowString())
     ];
+    /* دکمه‌های زیر پیام سفارش: تماس مستقیم با مشتری و بازکردن سایت */
+    var siteUrl = "https://rezakermani222-crypto.github.io/tasisat-app/";
+    var markup = {
+      inline_keyboard: [[
+        { text: "تماس با مشتری", url: "tel:+98" + String(data.phone).replace(/^09/, "9") },
+        { text: "مشاهده سایت", url: siteUrl }
+      ]]
+    };
     return fetch("https://tapi.bale.ai/bot" + token + "/sendMessage", {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify({ chat_id: chat, text: lines.join("\n") })
+      body: JSON.stringify({ chat_id: chat, text: lines.join("\n"), reply_markup: markup })
     });
   }
 
