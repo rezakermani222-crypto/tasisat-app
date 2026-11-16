@@ -62,6 +62,17 @@ function nowString() {
   });
   var footBale = $("#footBale");
   if (footBale) footBale.textContent = "ble.ir/" + (CFG.baleUsername || "tasisatrozbot");
+  var rubikaUrl = CFG.rubikaBotUrl || "";
+  var frw = $("#footRubikaWrap");
+  if (frw) frw.style.display = rubikaUrl ? "" : "none";
+  if (rubikaUrl) {
+    var fl = $("#footRubika");
+    if (fl) { fl.href = rubikaUrl; fl.textContent = rubikaUrl.replace("https://", ""); }
+  }
+  if (CFG.phone2) {
+    var c2 = $("#callAfter2");
+    if (c2) c2.href = "tel:" + CFG.phone2;
+  }
 })();
 
 /* ---------- ناوبری ---------- */
@@ -283,15 +294,12 @@ $("#guideList").addEventListener("click", function (e) {
     return errs;
   }
 
-  /* ثبت سفارش از طریق بات بله — کانال اصلی و بدون نیاز به سرور
-     متن کامل هر سفارش بلافاصله به‌صورت پیام در چت شما در بله می‌آید و آن‌جا قابل جستجو و نگهداری است.
-     سرور بله هدر CORS ندارد؛ پس پیام با mode:no-cors ارسال می‌شود و پاسخ قابل خواندن نیست،
-     ولی خود پیام به‌درستی تحویل داده می‌شود.
-     نکته: توکن گیت‌هاب را هرگز در config.js (فایل عمومی) قرار ندهید؛ گیت‌هاب توکن‌های
-     منتشرشده در مخازن عمومی را خودکار شناسایی و باطل می‌کند و سفارش‌ها خراب می‌شوند. */
-  function baleNotify(data, track) {
-    var token = CFG.baleBotToken, chat = CFG.baleChatId;
-    if (!token || !chat) return Promise.resolve();
+  /* ---------- ساخت متن سفارش و کپی ----------
+     سایت هیچ توکنی ندارد و برای ثبت سفارش هیچ درخواست شبکه‌ای زده نمی‌شود؛
+     پس این مرحله حتی در قطعی اینترنت یا اختلال سرورها هم شکست نمی‌خورد.
+     مشتری متن سفارش را در چت بات بله یا روبیکا می‌فرستد و پاسخ‌گوی خودکار
+     (روی GitHub Actions) آن را هر ۲ دقیقه به چت مالک فوروارد می‌کند. */
+  function orderText(data, track) {
     var lines = [
       "سفارش جدید از اپلیکیشن",
       "کد پیگیری: " + track,
@@ -307,20 +315,26 @@ $("#guideList").addEventListener("click", function (e) {
       "شرح: " + (data.description || "-"),
       "زمان ثبت: " + (data.createdAt || nowString())
     ];
-    /* دکمه‌های زیر پیام سفارش: تماس مستقیم با مشتری و بازکردن سایت */
-    var siteUrl = "https://rezakermani222-crypto.github.io/tasisat-app/";
-    var markup = {
-      inline_keyboard: [[
-        { text: "تماس با مشتری", url: "tel:+98" + String(data.phone).replace(/^09/, "9") },
-        { text: "مشاهده سایت", url: siteUrl }
-      ]]
-    };
-    return fetch("https://tapi.bale.ai/bot" + token + "/sendMessage", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=UTF-8" },
-      body: JSON.stringify({ chat_id: chat, text: lines.join("\n"), reply_markup: markup })
-    });
+    return lines.join("\n");
+  }
+
+  function copyToClipboard(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).catch(function () { legacyCopy(txt); });
+      return;
+    }
+    legacyCopy(txt);
+  }
+
+  function legacyCopy(txt) {
+    var ta = document.createElement("textarea");
+    ta.value = txt;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
   }
 
   function showStatus(kind, msg) {
@@ -349,29 +363,34 @@ $("#guideList").addEventListener("click", function (e) {
     if (errs.length) { showStatus("err", errs.map(esc).join("<br>")); return; }
 
     var track = trackingCode();
-    var btn = $("#submitBtn");
-    btn.disabled = true;
-    var oldHtml = btn.innerHTML;
-    btn.innerHTML = '<span class="spinner"></span> در حال ارسال...';
+    /* ---------- ثبت سفارش بدون توکن ----------
+       متن سفارش ساخته و کپی می‌شود و مشتری آن را در چت بات می‌فرستد. */
+    var txt = orderText(data, track);
+    copyToClipboard(txt);
+    f.style.display = "none";
+    $("#formStatus").className = "form-status";
+    $("#trackCode").textContent = track;
+    var ot = $("#orderText");
+    if (ot) ot.value = txt;
+    var sb = $("#sendBale");
+    if (sb) sb.href = "https://ble.ir/" + (CFG.baleUsername || "tasisatrozbot");
+    var sr = $("#sendRubika");
+    if (sr) {
+      if (CFG.rubikaBotUrl) { sr.href = CFG.rubikaBotUrl; sr.style.display = ""; }
+      else { sr.style.display = "none"; }
+    }
+    $("#successBox").classList.add("show");
+    toast("سفارش آماده ارسال است");
+  });
 
-    /* ارسال سفارش به بات بله؛ در صورت قطع‌بودن اینترنت پیام خطا و شماره تماس نمایش داده می‌شود */
-    Promise.resolve()
-      .then(function () { return baleNotify(data, track); })
-      .then(function () {
-        btn.disabled = false;
-        btn.innerHTML = oldHtml;
-        f.style.display = "none";
-        $("#formStatus").className = "form-status";
-        $("#trackCode").textContent = track;
-        $("#successBox").classList.add("show");
-        toast("سفارش با موفقیت ثبت شد");
-      })
-      .catch(function () {
-        btn.disabled = false;
-        btn.innerHTML = oldHtml;
-        showStatus("err", "ارسال سفارش ناموفق بود؛ اینترنت را چک کنید و دوباره تلاش کنید، یا با شماره " +
-          esc(CFG.phone || "") + " تماس بگیرید.");
-      });
+  var copyBtn = $("#copyBtn");
+  if (copyBtn) copyBtn.addEventListener("click", function () {
+    var ot = $("#orderText");
+    if (ot) {
+      copyToClipboard(ot.value);
+      ot.select();
+      toast("متن سفارش کپی شد");
+    }
   });
 
   $("#againBtn").addEventListener("click", function () {
