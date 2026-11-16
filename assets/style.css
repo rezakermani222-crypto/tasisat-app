@@ -259,3 +259,13 @@ footer { background: var(--navy); color: #CBD8E6; margin-top: 30px; }
 }
 @media (min-width: 860px) { .toast { inset-inline-start: auto; inset-inline-end: 24px; bottom: 24px; width: 340px; } }
 .toast.show { opacity: 1; transform: none; }
+
+/* جعبه موفقیت: متن سفارش و دکمه‌های ارسال */
+.success-box .order-copy {
+  width: 100%; min-height: 150px; margin: 10px 0 4px; padding: 10px 12px;
+  border: 1.5px solid #D9E4EE; border-radius: 12px; background: #F7FAFC;
+  color: var(--navy); font-family: inherit; font-size: .85rem; line-height: 1.9;
+  resize: vertical; text-align: right; direction: rtl; box-sizing: border-box;
+}
+.success-box .order-copy:focus { outline: none; border-color: var(--teal); }
+.success-box .send-hint { font-size: .8rem; color: var(--muted); margin: 8px 0 12px; }

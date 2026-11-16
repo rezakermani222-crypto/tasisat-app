@@ -170,15 +170,25 @@
         <div class="form-status" id="formStatus"></div>
       </form>
 
-      <div class="success-box" id="successBox">
+            <div class="success-box" id="successBox">
         <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <h3>سفارش شما ثبت شد</h3>
+        <h3>سفارش شما آماده ارسال است</h3>
         <div>کد پیگیری:</div>
         <div class="track" id="trackCode">—</div>
-        <p>همکاران ما در اسرع وقت با شماره شما تماس می‌گیرند. کد پیگیری را نگه دارید.</p>
+        <p>مرحله آخر: متن سفارش کپی شده است. دکمه «ارسال در بله» یا «ارسال در روبیکا» را بزنید و در چت بات، کادر پیام را نگه دارید و Paste را انتخاب کنید و ارسال بزنید. همکاران ما بلافاصله پس از دریافت، با شما تماس می‌گیرند.</p>
+        <textarea id="orderText" class="order-copy" readonly></textarea>
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+          <a class="btn btn-primary" id="sendBale" href="https://ble.ir/tasisatrozbot" target="_blank" rel="noopener">ارسال در بله</a>
+          <a class="btn btn-outline" id="sendRubika" href="https://rubika.ir/tasisatrozbot" target="_blank" rel="noopener">ارسال در روبیکا</a>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn btn-outline" id="copyBtn">کپی مجدد متن سفارش</button>
+        </div>
+        <p class="send-hint">اگر دکمه‌ها کار نکرد، متن بالا را کپی کنید و در چت بات بفرستید؛ یا تلفنی سفارش دهید:</p>
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+          <a class="btn btn-ghost" id="callAfter" style="background:#EEF4F9;color:#0E2A47;border:1.5px solid #D9E4EE" href="tel:">تماس همراه</a>
+          <a class="btn btn-ghost" id="callAfter2" style="background:#EEF4F9;color:#0E2A47;border:1.5px solid #D9E4EE" href="tel:02166157626">تماس دفتر</a>
           <button class="btn btn-outline" id="againBtn">ثبت سفارش دیگر</button>
-          <a class="btn btn-ghost" id="callAfter" style="background:#EEF4F9;color:#0E2A47;border:1.5px solid #D9E4EE" href="tel:">تماس تلفنی</a>
         </div>
       </div>
     </div>
@@ -195,6 +205,7 @@
     <div class="f-line" id="footHours"></div>
     <div class="f-line">تلفن همراه: <a href="tel:" id="footPhone" style="color:#7FE7DB">—</a><span id="footPhone2Wrap" style="display:none"> | تلفن ثابت: <a href="tel:" id="footPhone2" style="color:#7FE7DB">—</a></span></div>
     <div class="f-line">گفتگو در بله: <a href="https://ble.ir/tasisatrozbot" id="footBale" target="_blank" rel="noopener" style="color:#7FE7DB">ble.ir/tasisatrozbot</a></div>
+    <div class="f-line" id="footRubikaWrap" style="display:none">گفتگو در روبیکا: <a href="https://rubika.ir/tasisatrozbot" id="footRubika" target="_blank" rel="noopener" style="color:#7FE7DB">rubika.ir/tasisatrozbot</a></div>
     <div class="copy">سامانه ثبت سفارش و بانک خطای پکیج دیواری — نسخه ۱</div>
   </div>
 </footer>
