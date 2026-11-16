@@ -82,7 +82,7 @@ function gh(path, method, body) {
 function loadOrders() {
   $("#orderList").innerHTML = '<div class="empty"><span class="spinner"></span><br>در حال دریافت سفارش‌ها از گیت‌هاب...</div>';
   if (!CFG.ordersRepo || !CFG.githubToken) {
-    $("#orderList").innerHTML = '<div class="empty">برای نمایش سفارش‌ها، ابتدا ordersRepo و githubToken را در config.js تنظیم کنید.</div>';
+    $("#orderList").innerHTML = '<div class="empty">سفارش‌ها به‌صورت لحظه‌ای در چت بات شما در بله ثبت می‌شوند؛ برای مشاهده به بله بروید.<br><a class="btn btn-primary" style="display:inline-flex;margin-top:14px" href="https://ble.ir/' + esc(CFG.baleUsername || "tasisatrozbot") + '" target="_blank" rel="noopener">مشاهده سفارش‌ها در بله</a></div>';
     renderStats();
     return;
   }

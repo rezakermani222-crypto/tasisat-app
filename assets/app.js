@@ -33,12 +33,6 @@ function trackingCode() {
 function nowString() {
   try { return new Date().toLocaleString("fa-IR"); } catch (e) { return new Date().toISOString(); }
 }
-function utf8b64(str) {
-  var bytes = new TextEncoder().encode(str), bin = "";
-  for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-  return btoa(bin);
-}
-
 /* ---------- پیکربندی صفحه ---------- */
 (function applyConfig() {
   var name = CFG.businessName || "خدمات تاسیسات ساختمان";
@@ -289,30 +283,15 @@ $("#guideList").addEventListener("click", function (e) {
     return errs;
   }
 
-  /* ارسال به گیت‌هاب */
-  function ghRequest(path, method, body) {
-    return fetch("https://api.github.com" + path, {
-      method: method,
-      headers: {
-        "Authorization": "Bearer " + CFG.githubToken,
-        "Accept": "application/vnd.github+json",
-        "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
-      },
-      body: body ? JSON.stringify(body) : undefined
-    }).then(function (res) {
-      return res.json().catch(function () { return {}; }).then(function (j) {
-        return { ok: res.ok, status: res.status, json: j };
-      });
-    });
-  }
-
-  /* اعلان فوری سفارش در پیام‌رسان بله (بدون نیاز به سرور)
+  /* ثبت سفارش از طریق بات بله — کانال اصلی و بدون نیاز به سرور
+     متن کامل هر سفارش بلافاصله به‌صورت پیام در چت شما در بله می‌آید و آن‌جا قابل جستجو و نگهداری است.
      سرور بله هدر CORS ندارد؛ پس پیام با mode:no-cors ارسال می‌شود و پاسخ قابل خواندن نیست،
-     ولی خود پیام به‌درستی تحویل داده می‌شود. تا baleChatId در config.js خالی است، این تابع کاری نمی‌کند. */
+     ولی خود پیام به‌درستی تحویل داده می‌شود.
+     نکته: توکن گیت‌هاب را هرگز در config.js (فایل عمومی) قرار ندهید؛ گیت‌هاب توکن‌های
+     منتشرشده در مخازن عمومی را خودکار شناسایی و باطل می‌کند و سفارش‌ها خراب می‌شوند. */
   function baleNotify(data, track) {
     var token = CFG.baleBotToken, chat = CFG.baleChatId;
-    if (!token || !chat) return;
+    if (!token || !chat) return Promise.resolve();
     var lines = [
       "سفارش جدید از اپلیکیشن",
       "کد پیگیری: " + track,
@@ -328,31 +307,12 @@ $("#guideList").addEventListener("click", function (e) {
       "شرح: " + (data.description || "-"),
       "زمان ثبت: " + (data.createdAt || nowString())
     ];
-    try {
-      fetch("https://tapi.bale.ai/bot" + token + "/sendMessage", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
-        body: JSON.stringify({ chat_id: chat, text: lines.join("\n") })
-      });
-    } catch (e) { /* بله اختیاری است؛ خطا نباید ثبت سفارش را متوقف کند */ }
-  }
-
-  function mailtoFallback(data, track) {
-    var email = CFG.adminEmail || "";
-    var body = "سفارش جدید (" + track + ")\n\n" +
-      "نام: " + data.name + "\n" +
-      "تلفن: " + data.phone + "\n" +
-      "شهر/منطقه: " + data.city + "\n" +
-      "آدرس: " + (data.address || "-") + "\n" +
-      "خدمت: " + data.service + "\n" +
-      "برند: " + (data.brand || "-") + " | مدل: " + (data.model || "-") + "\n" +
-      "کد خطا: " + (data.errorCode || "-") + "\n" +
-      "زمان مراجعه: " + (data.when || "-") + "\n" +
-      "شرح: " + (data.description || "-") + "\n" +
-      "زمان ثبت: " + (data.createdAt || nowString());
-    var url = "mailto:" + email + "?subject=" + encodeURIComponent("سفارش جدید " + track) + "&body=" + encodeURIComponent(body);
-    window.location.href = url;
+    return fetch("https://tapi.bale.ai/bot" + token + "/sendMessage", {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({ chat_id: chat, text: lines.join("\n") })
+    });
   }
 
   function showStatus(kind, msg) {
@@ -386,67 +346,24 @@ $("#guideList").addEventListener("click", function (e) {
     var oldHtml = btn.innerHTML;
     btn.innerHTML = '<span class="spinner"></span> در حال ارسال...';
 
-    var ghReady = CFG.ordersRepo && CFG.githubToken;
-
-    function finishOk() {
-      baleNotify(data, track);
-      btn.disabled = false;
-      btn.innerHTML = oldHtml;
-      f.style.display = "none";
-      $("#formStatus").className = "form-status";
-      $("#trackCode").textContent = track;
-      $("#successBox").classList.add("show");
-      toast("سفارش با موفقیت ثبت شد");
-    }
-
-    if (ghReady) {
-      var order = Object.assign({}, data, {
-        id: track,
-        trackingCode: track,
-        createdAt: nowString(),
-        status: "جدید",
-        history: [{ status: "جدید", at: nowString() }]
-      });
-      var fname = "order-" + new Date().toISOString().slice(0, 10).replace(/-/g, "") + "-" + track.split("-")[2] + ".json";
-      var path = "/repos/" + CFG.ordersRepo + "/contents/data/orders/" + fname;
-      ghRequest(path, "PUT", {
-        message: "سفارش جدید " + track,
-        content: utf8b64(JSON.stringify(order, null, 2))
-      }).then(function (r) {
-        if (r.ok) { finishOk(); return; }
-        if (r.status === 409 || r.status === 422) { /* تلاش مجدد با نام جدید */
-          fname = "order-" + Date.now() + "-" + track.split("-")[2] + ".json";
-          return ghRequest("/repos/" + CFG.ordersRepo + "/contents/data/orders/" + fname, "PUT", {
-            message: "سفارش جدید " + track,
-            content: utf8b64(JSON.stringify(order, null, 2))
-          }).then(function (r2) {
-            if (r2.ok) finishOk();
-            else fail(r2);
-          });
-        }
-        fail(r);
-      }).catch(function () { fail(null); });
-
-      function fail(r) {
-        baleNotify(data, track); /* حتی وقتی ذخیره در گیت‌هاب خطا می‌دهد، سفارش در بله نمی‌پرد */
+    /* ارسال سفارش به بات بله؛ در صورت قطع‌بودن اینترنت پیام خطا و شماره تماس نمایش داده می‌شود */
+    Promise.resolve()
+      .then(function () { return baleNotify(data, track); })
+      .then(function () {
         btn.disabled = false;
         btn.innerHTML = oldHtml;
-        var why = "ارتباط با گیت‌هاب برقرار نشد.";
-        if (r && (r.status === 401 || r.status === 403)) why = "توکن گیت‌هاب نامعتبر است یا دسترسی ندارد (کد " + r.status + ").";
-        else if (r && r.status === 404) why = "مخزن سفارش‌ها پیدا نشد؛ ordersRepo را در config.js چک کنید.";
-        showStatus("err", esc(why) + '<br>مقدار تنظیم‌شده در config.js را طبق راهنما بررسی کنید یا سفارش را با ایمیل بفرستید:<br><a href="#" id="mailNow">ارسال سفارش با ایمیل</a>');
-        var m = $("#mailNow");
-        if (m) m.addEventListener("click", function (ev) { ev.preventDefault(); mailtoFallback(data, track); });
-      }
-    } else {
-      /* حالت ایمیل: توکن تنظیم نشده */
-      baleNotify(data, track);
-      mailtoFallback(data, track);
-      btn.disabled = false;
-      btn.innerHTML = oldHtml;
-      showStatus("ok", "اپ ایمیل با متن کامل سفارش باز شد؛ فقط ایمیل را ارسال کنید.<br>اگر اپ ایمیل باز نشد، برای اطمینان با شماره " +
-        esc(CFG.phone || "") + " تماس بگیرید. (برای ذخیره خودکار سفارش‌ها در گیت‌هاب، توکن را طبق راهنمای PDF در config.js تنظیم کنید.)");
-    }
+        f.style.display = "none";
+        $("#formStatus").className = "form-status";
+        $("#trackCode").textContent = track;
+        $("#successBox").classList.add("show");
+        toast("سفارش با موفقیت ثبت شد");
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.innerHTML = oldHtml;
+        showStatus("err", "ارسال سفارش ناموفق بود؛ اینترنت را چک کنید و دوباره تلاش کنید، یا با شماره " +
+          esc(CFG.phone || "") + " تماس بگیرید.");
+      });
   });
 
   $("#againBtn").addEventListener("click", function () {
